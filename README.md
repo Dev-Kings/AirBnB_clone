@@ -48,5 +48,5 @@ Each task is linked and helps to:
 
 ## Collaborators
 - [Daniel Kipkosgei](https://www.linkedin.com/in/daniel-kipkosgei-2ab84117b/)
-- [David King'asia](https://www.linkedin.com/in/davidkingasia/
+- [David King'asia](https://www.linkedin.com/in/davidkingasia/)
 
