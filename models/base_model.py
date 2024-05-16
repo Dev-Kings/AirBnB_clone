@@ -2,6 +2,10 @@
 
 import uuid
 from datetime import datetime
+from models.engine.file_storage import FileStorage
+
+storage = FileStorage()
+
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
@@ -12,15 +16,20 @@ class BaseModel:
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
         """
-        if kwargs:
+        if kwargs: # If kwargs is not empty
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
+                    # Convert created_at and updated_at to datetime objects
                     setattr(self, key, datetime.fromisoformat(value))
                 elif key != "__class__":
+                    # Set each attribute according to the key-value pairs
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.now().isoformat()
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
+            # Add a call  to new() method on storage for new instances
+            storage.new(self) 
     
     def __str__(self):
         """
@@ -29,13 +38,16 @@ class BaseModel:
         Returns:
             str: String representation of the BaseModel instance
         """
-        print f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+        return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
+        # print(string_rep)
+        # return string_rep
 
     def save(self):
         """
         Update the public instance attribute updated_at with the current datetime.
         """
-        self.updated_at = datetime.now().isoformat()
+        self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """
@@ -45,9 +57,9 @@ class BaseModel:
         Returns:
             dict: Dictionary representation ot the instance.
         """
-        instance_dict = self.__dict__.copy()
-        instance_dict["__class__"] = self.__class__.__name__
-        instance_dict["created_at"] = self.created_at.isoformat()
-        instance_dict["updated_at"] = self.updated_at.isoformat()
-        return instance_dict
+        dict_object = self.__dict__.copy()
+        dict_object["__class__"] = self.__class__.__name__
+        dict_object["created_at"] = self.created_at.isoformat()
+        dict_object["updated_at"] = self.updated_at.isoformat()
+        return dict_object
 
