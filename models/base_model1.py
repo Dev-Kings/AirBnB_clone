@@ -2,7 +2,6 @@
 """BaseModel class."""
 import uuid
 from datetime import datetime
-from engine.file_storage import storage
 
 
 class BaseModel:
@@ -20,7 +19,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
-            storage.new(self)
+            self.__import__storage().new(self)
 
     def __str__(self):
         """String rep of class instance."""
@@ -29,14 +28,21 @@ class BaseModel:
     def save(self):
         """Updates public instance updated_at with the current datetime."""
         self.updated_at = datetime.now()
-        storage.save()
+        self.__import__storage().save()
 
     def to_dict(self):
         """Converts instance to dictionary.
         Return:
             Dictionary of all key/values of __dict__ of the instance.
         """
-        self.__dict__['created_at'] = self.created_at.isoformat()
-        self.__dict__['updated_at'] = self.updated_at.isoformat()
-        self.__dict__['__class__'] = self.__class__.__name__
-        return self.__dict__
+        dict_rep = self.__dict__.copy()
+        dict_rep['created_at'] = self.created_at.isoformat()
+        dict_rep['updated_at'] = self.updated_at.isoformat()
+        dict_rep['__class__'] = self.__class__.__name__
+        return dict_rep
+
+    def __import__storage(self):
+        """Imports storage only when needed.
+        This prevents 'circular import error'."""
+        from models import storage
+        return storage

@@ -6,7 +6,11 @@ from models.base_model1 import BaseModel
 
 class FileStorage:
     """The class serializes instances to a JSON file and deserializes
-    JSON file to instances."""
+    JSON file to instances.
+    Attributes:
+        __file_path: path of file
+        __objects: dictionary of objects
+    """
 
     __file_path = "file.json"
     __objects = {}
@@ -26,7 +30,7 @@ class FileStorage:
         """Serializes __objects to the JSON file."""
         with open(self.__file_path, 'w', encoding='utf-8') as json_file:
             serialize_objects = {key: obj.to_dict() for key, obj in self.__class__.__objects.items()}
-            json.dump(self.__class__.__objects, json_file)
+            json.dump(serialize_objects, json_file)
 
     def reload(self):
         """Deserializes JSON file to __objects.
@@ -35,9 +39,8 @@ class FileStorage:
             with open("file.json", "r") as json_file:
                 objects_dict = json.load(json_file)
                 for key, object_dict in objects_dict.items():
-                    self.__class__.__objects[key] = BaseModel(**object_dict)
+                    cls = globals()[object_dict['__class__']]
+                    self.__objects[key] = cls(**object_dict)
         except IOError:
             pass
 
-
-storage = FileStorage()
