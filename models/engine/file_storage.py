@@ -1,12 +1,15 @@
 # models/engine/file_storage.py
 
 import json
-import os
-
+from models.base_model import BaseModel
 
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
+    def __init__(self):
+        """ initializes the Filestorage instance. """
+        # self.__file_path = "file.json"
+        # self.__objects = {} #Dict to store objects by <classname.id>
 
     def all(self):
         """Returns the dictionary __objects."""
@@ -19,19 +22,24 @@ class FileStorage:
 
     def save(self):
         """Serializes __objects to the JSON file (path: __file_path)."""
-        serialized_objs = {}
+        serialized_objects = {}
         for key, obj in self.__objects.items():
-            serialized_objs[key] = obj.to_dict()
+            serialized_objects[key] = obj.to_dict()
 
         with open(self.__file_path, 'w') as json_file:
-            json.dump(serialized_objs, json_file)
+            json.dump(serialized_objects, json_file)
 
     def reload(self):
         """Deserializes the JSON file to __objects."""
-        if os.path.exists(self.__file_path):
+        try:
             with open(self.__file_path, 'r') as json_file:
-                serialized_objs = json.load(json_file)
-                for key, obj_dict in serialized_objs.items():
-                    class_name = key.split('.')[0]
-                    if class_name == 'BaseModel':
-                        self.__objects[key] = BaseModel(**serialized_objs)
+                data = json.load(json_file)
+                for key, obj_dict in data.items():
+                    class_name, obj_id = key.split(".")
+                    # Recreate instances based on class name
+                    if class_name == "BaseModel":
+                        new_instance = BaseModel(**obj_dict)
+                        self.__objects[key] = new_instance
+                    # Add other class names here if needed
+        except FileNotFoundError:
+            pass
