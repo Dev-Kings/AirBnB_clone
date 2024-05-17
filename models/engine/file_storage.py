@@ -2,14 +2,15 @@
 
 import json
 from models.base_model import BaseModel
+from models.user import User
 
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
+
     def __init__(self):
         """ initializes the Filestorage instance. """
-        # self.__file_path = "file.json"
-        # self.__objects = {} #Dict to store objects by <classname.id>
+        pass
 
     def all(self):
         """Returns the dictionary __objects."""
@@ -39,7 +40,8 @@ class FileStorage:
                     # Recreate instances based on class name
                     if class_name == "BaseModel":
                         new_instance = BaseModel(**obj_dict)
-                        self.__objects[key] = new_instance
-                    # Add other class names here if needed
+                    elif class_name == "User":
+                        new_instance = User(**obj_dict)
+                    self.__objects[key] = new_instance
         except FileNotFoundError:
             pass

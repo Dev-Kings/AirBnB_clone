@@ -4,6 +4,7 @@ import shlex
 import cmd
 import json
 from models.base_model import BaseModel
+from models.user import User
 from models.engine.file_storage import FileStorage
 
 storage = FileStorage()
@@ -18,6 +19,7 @@ class HBNBCommand(cmd.Cmd):
 
     classes = {
         'BaseModel': BaseModel,
+        'user' : User,
         # Add other models here
     }
     
@@ -91,6 +93,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         except NameError:
             print("** class doesn't exist **")
+
     def do_all(self, arg):
         """Print all string representations of instances."""
         args = arg.split()
@@ -107,9 +110,9 @@ class HBNBCommand(cmd.Cmd):
                 if print_instances:
                     print(print_instances)
                 else:
-                    print("** class doesn't exixxexcessst **")
+                    print("** class doesn't exist **")
             except NameError:
-                print("** class doesn't exiiiiiiiiiiiiiiiist **")
+                print("** class doesn't exist **")
 
     def do_update(self, arg):
         """Update an instance based on class name and id."""
@@ -144,4 +147,3 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
