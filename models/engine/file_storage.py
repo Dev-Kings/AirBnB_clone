@@ -3,10 +3,26 @@
 import json
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
+
+    # Map of class name to classes for deserialization
+    class_map = {
+            'BaseModel' : BaseModel,
+            'User' : User,
+            'State' : State,
+            'City' : City,
+            'Amenity' : Amenity,
+            'Place' : Place,
+            'Review' : Review
+        }
 
     def __init__(self):
         """ initializes the Filestorage instance. """
@@ -38,10 +54,8 @@ class FileStorage:
                 for key, obj_dict in data.items():
                     class_name, obj_id = key.split(".")
                     # Recreate instances based on class name
-                    if class_name == "BaseModel":
-                        new_instance = BaseModel(**obj_dict)
-                    elif class_name == "User":
-                        new_instance = User(**obj_dict)
-                    self.__objects[key] = new_instance
+                    if class_name in self.class_map:
+                        cls = self.class_map[class_name]
+                        self.__objects[key] = cls(**obj_dict)
         except FileNotFoundError:
             pass
