@@ -11,13 +11,13 @@ class TestBaseModel(unittest.TestCase):
         """
         self.instance = BaseModel()
 
-    def test_attributes(self):
+#    def test_attributes(self):
         """
         Test that a BaseModel instance has the correct attributes
         upon initialization """
-        self.assertIsInstance(self.instance.id, str)
-        self.assertIsInstance(self.instance.created_at, datetime)
-        self.assertIsInstance(self.instance.updated_at, datetime)
+        #self.assertIsInstance(self.instance.id, str)
+        #self.assertIsInstance(self.instance.created_at, datetime)
+        #self.assertIsInstance(self.instance.updated_at, datetime)
 
     def test_str_method(self):
         """ Test the __str__ method to ensure it returns the correct
@@ -72,7 +72,13 @@ class TestBaseModel(unittest.TestCase):
             "2024-05-15T14:47:43.382659"))
         self.assertEqual(self.instance.updated_at, datetime.fromisoformat(
             "2024-05-15T14:48:39.231418"))
-        self.assertEqual(self.instance.name, "Example")
+        self.assertEqual(self.instance.name, "Example"
+    )
+    def test_attributes(self):
+        self.assertIsInstance(self.instance.id, str)
+        self.assertIsInstance(self.instance.created_at, datetime)
+        self.assertIsInstance(self.instance.updated_at, datetime)
+
 
 if __name__ == "__main__":
     unittest.main()
