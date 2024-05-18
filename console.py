@@ -1,5 +1,33 @@
 #!/usr/bin/python3
 
+"""
+console.py
+
+This module defines the command interpreter for the
+application. It utilizes the cmd module to provide a
+simple command-line interface (CLI) for interacting with
+various models in the application.
+
+Classes:
+    HBNBCommand: The command interpreter class that
+    inherits from cmd.Cmd.
+
+Usage:
+    This module can be run as a standalone script to
+    start the command interpreter. It provides commands
+    to create, show, destroy, update, and list instances
+    of different models.
+
+Example:
+    $ ./console.py
+    (hbnb) create User
+    (hbnb) show User 1234-1234-1234
+    (hbnb) quit
+
+Attributes:
+    prompt (str): The prompt symbol for the command interpreter.
+"""
+
 import shlex
 import cmd
 import json
