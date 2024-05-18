@@ -1,33 +1,32 @@
 #!/usr/bin/python3
-# models/base_model.py
+"""models/base_model module"""
 
-# Import the variable 'storage' from file_storage.py
-# from models.engine.file_storage import FileStorage
 import uuid
 from datetime import datetime
 
 
 class BaseModel:
+    """Class defining all attributes/methods for other classes."""
     def __init__(self, *args, **kwargs):
         """
         Initializes a new BaseModel instance.
-        If kwargs is not emptym, recreate the instance from a
-        dictionary representation.
-        otherwise, create a new instance."""
+        If kwargs is not empty, recreate the instance from a
+        dictionary representation otherwise, create a new instance.
+        Args:
+            *args: Variable length of arguments.
+            **kwargs: Named kerword arguments.
+        """
 
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
-                    # Convert created_at and updated_at to datetime objects
                     setattr(self, key, datetime.fromisoformat(value))
                 elif key != "__class__":
-                    # Set each attribute according to the key-value pairs
                     setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
-            # Add a call  to new() method on storage for new instances
             self._import_storage().new(self)
 
     def __str__(self):
@@ -38,8 +37,6 @@ class BaseModel:
             str: String representation of the BaseModel instance
         """
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
-        # print(string_rep)
-        # return string_rep
 
     def save(self):
         """
@@ -64,6 +61,9 @@ class BaseModel:
         return dict_object
 
     def _import_storage(self):
-        " Imports storage when required "
+        """Imports storage when required.
+        Return:
+            storage
+        """
         from models import storage
         return storage

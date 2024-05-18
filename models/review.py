@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-# models/review.py
+"""models/review module
+Contains Review class.
+"""
 
 from models.base_model import BaseModel
 

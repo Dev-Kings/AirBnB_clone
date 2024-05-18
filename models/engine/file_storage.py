@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-# models/engine/file_storage.py
+"""models/engine/file_storage module
+Contains class FileStorage.
+"""
 
 import json
 from models.base_model import BaseModel
@@ -12,10 +14,15 @@ from models.review import Review
 
 
 class FileStorage:
+    """serializes instances to a JSON file and deserializes
+    JSON file to instances.
+    Args:
+        __file_path (str): File.
+        __objects (dict): Dictionary of class objects.
+    """
     __file_path = "file.json"
     __objects = {}
 
-    # Map of class name to classes for deserialization
     class_map = {
             'BaseModel': BaseModel,
             'User': User,
@@ -35,7 +42,10 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
-        """Sets in __objects the obj with key <obj class name>.id."""
+        """Sets in __objects the obj with key <obj class name>.id.
+        Args:
+            obj (obj): class object
+        """
         key = f"{obj.__class__.__name__}.{obj.id}"
         self.__objects[key] = obj
 
@@ -55,7 +65,6 @@ class FileStorage:
                 data = json.load(json_file)
                 for key, obj_dict in data.items():
                     class_name, obj_id = key.split(".")
-                    # Recreate instances based on class name
                     if class_name in self.class_map:
                         cls = self.class_map[class_name]
                         self.__objects[key] = cls(**obj_dict)
