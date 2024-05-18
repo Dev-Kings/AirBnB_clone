@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # models/user.py
 
 from models.base_model import BaseModel
