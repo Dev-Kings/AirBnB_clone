@@ -24,7 +24,7 @@ class HBNBCommand(cmd.Cmd):
 
     classes = {
         'BaseModel': BaseModel,
-        'user' : User,
+        'User' : User,
         'State' : State,
         'City' : City,
         'Amenity' : Amenity,
@@ -153,6 +153,148 @@ class HBNBCommand(cmd.Cmd):
         except NameError:
             print("** class doesn't exist **")
 
+    def default(self, line):
+        """ Called on input line when the command is not recognized """
+        args = line.split('.')
+        if len(args) == 2:
+            class_name, command = args
+            command_args = command.split('(')
+            command_name = command_args[0]
+            if len(command_args) > 1:
+                command_params = command_args[1].replace(')', '').split(',')
+                command_params = [param.strip().replace('"', '').replace("'", "")
+                        for param in command_params]
+            else:
+                command_params = []
+
+            if command_name == 'all':
+                self.handle_all(class_name)
+            elif command_name == 'count':
+                self.handle_count(class_name)
+            elif command_name == 'show':
+                self.handle_show(class_name, command_params)
+            elif command_name == 'destroy':
+                self.handle_destroy(class_name, command_params)
+            elif command_name == 'update':
+                if len(command_params) == 2 and command_params[1].startswith('{') and \
+                        command_params[1].endswith('}'):
+                            self.handle_update_dict(class_name, command_params)
+                else:
+                    self.handle_update(class_name, command_params)
+            else:
+                print("** Unknown sntax: {}".format(line))
+        else:
+            print("** Unknown suntax: {}".format(line))
+    
+    def handle_all(self, class_name):
+        """ Handle the <class name>.all() command to print all
+        instances of a class """
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+        all_instances = storage.all()
+        result = []
+        for key, obj in all_instances.items():
+            if key.split('.')[0] == class_name:
+                result.append(str(obj))
+        print(result)
+
+    def handle_count(self, class_name):
+        """ Handle the <class name>.count() command to count all
+        istances of a class """
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+        all_instances = storage.all()
+        count = 0
+        for key in all_instances:
+            if key.split('.')[0] == class_name:
+                count += 1
+        print(count)
+
+    def handle_show(self, class_name, params):
+        """ Handle the <class name>.show(<id>) command to print an
+        instane based on its ID."""
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+        if len(params) < 1:
+            print("** instance id missing **")
+            return
+        instance_id = params[0]
+        key = "{}.{}".format(class_name, instance_id)
+        all_instances = storage.all()
+        if key in all_instances:
+            print(all_instances[key])
+        else:
+            print("** no instance found **")
+
+    def handle_destroy(self, class_name, params):
+        """Handle the <class name>.destroy(<id>) command to delete
+        an instance based on its ID."""
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+        if len(params) < 1:
+            print("** instance id missing **")
+            return
+        instance_id = params[0]
+        key = "{}.{}".format(class_name, instance_id)
+        all_instances = storage.all()
+        if key in all_instances:
+            del all_instances[key]
+            storage.save()
+        else:
+            print("** no instance found **")
+
+    def handle_update(self, class_name, params):
+        """Handle the <class name>.update(<id>, <attribute name>,
+        <attribute value>) command."""
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+        if len(params) < 3:
+            print("** attribute name or value missing **")
+            return
+        instance_id = params[0]
+        attribute_name = params[1]
+        attribute_value = params[2]
+        key = "{}.{}".format(class_name, instance_id)
+        all_instances = storage.all()
+        if key not in all_instances:
+            print("** no instance found **")
+            return
+        instance = all_instances[key]
+        setattr(instance, attribute_name, attribute_value)
+        instance.save()
+
+    def handle_update_dict(self, class_name, params):
+        """Handle the <class name>.update(<id>, <dictionary representation>)
+        command."""
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+        if len(params) < 2:
+            print("** instance id or dictionary representation missing **")
+            return
+        instance_id = params[0]
+        try:
+            attribute_dict = json.loads(params[1].replace("'", '"'))
+        except json.JSONDecodeError:
+            print("** invalid dictionary representation **")
+            return
+        key = "{}.{}".format(class_name, instance_id)
+        all_instances = storage.all()
+        if key not in all_instances:
+            print("** no instance found **")
+            return
+        instance = all_instances[key]
+        for attr, val in attribute_dict.items():
+            setattr(instance, attr, val)
+        instance.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
+
+
+

@@ -1,9 +1,10 @@
 # models/place.py
 
+from models.base_model import BaseModel
 class Place(BaseModel):
     """ Place class inherits from BaseModel """
 
-    def __init__(self, (*args, **kwargs):
+    def __init__(self, *args, **kwargs):
             """ Initializes a new Place instance. """
             super().__init__(*args, **kwargs)
             self.city_id = kwargs.get('city_id', "")
