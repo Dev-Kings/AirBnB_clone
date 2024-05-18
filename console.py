@@ -273,9 +273,9 @@ class HBNBCommand(cmd.Cmd):
             elif command_name == 'destroy':
                 self.handle_destroy(class_name, command_params)
             elif command_name == 'update':
-                if len(command_params) == 2
-                and command_params[1].startswith('{')
-                and command_params[1].endswith('}'):
+                if len(command_params) == 2 \
+                    and command_params[1].startswith('{') \
+                        and command_params[1].endswith('}'):
                     self.handle_update_dict(class_name, command_params)
                 else:
                     self.handle_update(class_name, command_params)
