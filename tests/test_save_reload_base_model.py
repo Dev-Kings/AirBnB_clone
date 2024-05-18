@@ -1,4 +1,7 @@
-# tests/test_file_storage.py
+#!/usr/bin/python3
+"""tests/test_file_storage module
+Contains tests om FileStorage class.
+"""
 
 import unittest
 import os
@@ -6,12 +9,14 @@ import json
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
+
 class TestFileStorage(unittest.TestCase):
+    """Contains test cases on FileStorage"""
     def setUp(self):
         """Set up test case environment."""
         self.storage = FileStorage()
-        self.file_path = self.storage._FileStorage__file_path  # Access private attribute for testing
-        self.objects = self.storage._FileStorage__objects  # Access private attribute for testing
+        self.file_path = self.storage._FileStorage__file_path
+        self.objects = self.storage._FileStorage__objects
         if os.path.exists(self.file_path):
             os.remove(self.file_path)
         self.model = BaseModel()
@@ -26,7 +31,8 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(self.storage.all(), self.objects)
 
     def test_new_method(self):
-        """Test the new method sets the object in __objects with the correct key."""
+        """Test the new method sets the object in __objects
+        with the correct key."""
         key = f"BaseModel.{self.model.id}"
         self.storage.new(self.model)
         self.assertIn(key, self.storage.all())
@@ -45,7 +51,7 @@ class TestFileStorage(unittest.TestCase):
         """Test the reload method deserializes the JSON file to __objects."""
         self.storage.new(self.model)
         self.storage.save()
-        self.storage._FileStorage__objects = {}  # Clear the current objects
+        self.storage._FileStorage__objects = {}
         self.storage.reload()
         key = f"BaseModel.{self.model.id}"
         self.assertIn(key, self.storage.all())
@@ -54,6 +60,6 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(reloaded_model.created_at, self.model.created_at)
         self.assertEqual(reloaded_model.updated_at, self.model.updated_at)
 
+
 if __name__ == '__main__':
     unittest.main()
-

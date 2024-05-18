@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-# models/user.py
+"""models/user module
+Contains class User
+"""
 
 """
 user.py
