@@ -19,7 +19,7 @@ storage = FileStorage()
 class HBNBCommand(cmd.Cmd):
     """
     Custom command interpreter for HBNB projects.
-    
+
     Attributes:
         prompt (str): Command prompt.
         classes (dict): Dictonary of available classes.
@@ -40,11 +40,23 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, arg):
         """
         Quit command to exit the program.
+
+        Args:
+            arg (str): Command argument.
+
+        Returns:
+            bool: True to exit the program.
         """
         return True
 
     def do_EOF(self, arg):
-        """Exit the program on EOF (Ctrl-D)."""
+        """Exit the program on EOF (Ctrl-D).
+        Args:
+            arg (str): Command argument.
+
+        Returns:
+            bool: True to exit the program.
+        """
         print()
         return True
 
@@ -55,7 +67,16 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """
         Create a new instance of BaseModel and save it to
-        JSON file."""
+        JSON file.
+
+        Usage: create <class name>
+
+        Args:
+            arg (str): Class name.
+
+        Returns:
+            None
+        """
         args = shlex.split(arg)
         if not args:
             print("** class name missing **")
@@ -69,7 +90,17 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
 
     def do_show(self, arg):
-        """Print the string representation of an instance."""
+        """
+        Print the string representation of an instance.
+
+        Usage: show <class name> <id>
+
+        Args:
+            arg (str): Command arguments.
+
+        Returns:
+            None
+        """
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -89,7 +120,17 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_destroy(self, arg):
-        """Delete an instance based on class name and id."""
+        """
+        Delete an instance based on class name and id.
+
+        Usage: destroy <class name> <id>
+
+        Args:
+            arg (str): Command arguments.
+
+        Returns:
+            None
+        """
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -110,7 +151,17 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def do_all(self, arg):
-        """Print all string representations of instances."""
+        """
+        Print all string representations of instances.
+
+        Usage: all or all <class name>
+
+        Args:
+            arg (str): Command argument.
+
+        Returns:
+            None
+        """
         args = arg.split()
         all_instances = storage.all()
         if not args:
@@ -130,7 +181,18 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
 
     def do_update(self, arg):
-        """Update an instance based on class name and id."""
+        """
+        Update an instance based on class name and id.
+
+        Usage: update <class name> <id> <attribute name>
+        <attribute value>
+
+        Args:
+            arg (str): Command arguments.
+
+        Returns:
+            None
+        """
         args = arg.split()
         if not args:
             print("** class name missing **")
@@ -160,7 +222,14 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def default(self, line):
-        """ Called on input line when the command is not recognized """
+        """
+        Called on input line when the command is not recognized
+        Args:
+            line (str): The command line input.
+
+        Returns:
+            None
+        """
         args = line.split('.')
         if len(args) == 2:
             class_name, command = args
@@ -200,8 +269,16 @@ class HBNBCommand(cmd.Cmd):
             print("** Unknown suntax: {}".format(line))
 
     def handle_all(self, class_name):
-        """ Handle the <class name>.all() command to print all
-        instances of a class """
+        """
+        Handle the <class name>.all() command to print all
+        instances of a class
+
+        Args:
+            class_name (str): The class name.
+
+        Returns:
+            None
+        """
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
@@ -213,8 +290,16 @@ class HBNBCommand(cmd.Cmd):
         print(result)
 
     def handle_count(self, class_name):
-        """ Handle the <class name>.count() command to count all
-        istances of a class """
+        """
+        Handle the <class name>.count() command to count
+        all istances of a class
+
+        Args:
+            class_name (str): The class name.
+
+        Returns:
+            None
+        """
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
@@ -226,8 +311,17 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def handle_show(self, class_name, params):
-        """ Handle the <class name>.show(<id>) command to print an
-        instane based on its ID."""
+        """
+        Handle the <class name>.show(<id>) command to
+        print an instane based on its ID.
+
+        Args:
+            class_name (str): The class name.
+            params (list): List of command parameters.
+
+        Returns:
+            None
+        """
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
@@ -243,8 +337,17 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def handle_destroy(self, class_name, params):
-        """Handle the <class name>.destroy(<id>) command to delete
-        an instance based on its ID."""
+        """
+        Handle the <class name>.destroy(<id>) command
+        to delete an instance based on its ID.
+
+        Args:
+            class_name (str): The class name.
+            params (list): List of command parameters.
+
+        Returns:
+            None
+        """
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
@@ -261,8 +364,14 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def handle_update(self, class_name, params):
-        """Handle the <class name>.update(<id>, <attribute name>,
-        <attribute value>) command."""
+        """
+        Handle the <class name>.update(
+        <id>, <attribute name>,<attribute value>) command.
+
+        Args:
+            class_name (str): The class name.
+            params (list): The list of parameters.
+        """
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
@@ -282,8 +391,14 @@ class HBNBCommand(cmd.Cmd):
         instance.save()
 
     def handle_update_dict(self, class_name, params):
-        """Handle the <class name>.update(<id>, <dictionary representation>)
-        command."""
+        """
+        Handle the <class name>.update(
+        <id>, <dictionary representation>)command.
+
+        Args:
+            class_name (str): The class name.
+            params (list): The list of parameters.
+        """
         if class_name not in self.classes:
             print("** class doesn't exist **")
             return
