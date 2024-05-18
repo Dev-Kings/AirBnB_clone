@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # models/base_model.py
 
 # Import the variable 'storage' from file_storage.py

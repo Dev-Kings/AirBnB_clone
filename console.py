@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 import shlex
 import cmd
@@ -18,7 +18,11 @@ storage = FileStorage()
 
 class HBNBCommand(cmd.Cmd):
     """
-    Custom command interpreter for HBNB project.
+    Custom command interpreter for HBNB projects.
+    
+    Attributes:
+        prompt (str): Command prompt.
+        classes (dict): Dictonary of available classes.
     """
 
     prompt = "(hbnb) "

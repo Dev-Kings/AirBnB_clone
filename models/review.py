@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # models/review.py
 
 from models.base_model import BaseModel
