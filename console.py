@@ -15,6 +15,7 @@ from models.engine.file_storage import FileStorage
 storage = FileStorage()
 # storage.reload()
 
+
 class HBNBCommand(cmd.Cmd):
     """
     Custom command interpreter for HBNB project.
@@ -24,32 +25,32 @@ class HBNBCommand(cmd.Cmd):
 
     classes = {
         'BaseModel': BaseModel,
-        'User' : User,
-        'State' : State,
-        'City' : City,
-        'Amenity' : Amenity,
-        'Place' : Place,
-        'Review' : Review
+        'User': User,
+        'State': State,
+        'City': City,
+        'Amenity': Amenity,
+        'Place': Place,
+        'Review': Review
     }
-    
+
     def do_quit(self, arg):
         """
         Quit command to exit the program.
         """
         return True
-    
+
     def do_EOF(self, arg):
         """Exit the program on EOF (Ctrl-D)."""
         print()
         return True
-    
+
     def emptyline(self):
         """Do nothing when an empty line is entered."""
         pass
-    
+
     def do_create(self, arg):
         """
-        Create a new instance of BaseModel and save it to 
+        Create a new instance of BaseModel and save it to
         JSON file."""
         args = shlex.split(arg)
         if not args:
@@ -82,6 +83,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         except NameError:
             print("** class doesn't exist **")
+
     def do_destroy(self, arg):
         """Delete an instance based on class name and id."""
         args = arg.split()
@@ -162,8 +164,12 @@ class HBNBCommand(cmd.Cmd):
             command_name = command_args[0]
             if len(command_args) > 1:
                 command_params = command_args[1].replace(')', '').split(',')
-                command_params = [param.strip().replace('"', '').replace("'", "")
-                        for param in command_params]
+                command_params = []
+                for param in command_params_str.split(','):
+                    stripped_param = param.strip()
+                    stripped_param = stripped_param.replace('"', '')
+                    stripped_param = stripped_param.replace("'", "")
+                    command_params.append(stripped_param)
             else:
                 command_params = []
 
@@ -176,16 +182,19 @@ class HBNBCommand(cmd.Cmd):
             elif command_name == 'destroy':
                 self.handle_destroy(class_name, command_params)
             elif command_name == 'update':
-                if len(command_params) == 2 and command_params[1].startswith('{') and \
-                        command_params[1].endswith('}'):
-                            self.handle_update_dict(class_name, command_params)
+                if (
+                        len(command_params) == 2 and
+                        command_params[1].startswith('{') and
+                        command_params[1].endswith('}')
+                ):
+                    self.handle_update_dict(class_name, command_params)
                 else:
                     self.handle_update(class_name, command_params)
             else:
                 print("** Unknown sntax: {}".format(line))
         else:
             print("** Unknown suntax: {}".format(line))
-    
+
     def handle_all(self, class_name):
         """ Handle the <class name>.all() command to print all
         instances of a class """
@@ -293,8 +302,6 @@ class HBNBCommand(cmd.Cmd):
             setattr(instance, attr, val)
         instance.save()
 
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
-
-
