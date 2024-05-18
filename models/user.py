@@ -1,6 +1,32 @@
 #!/usr/bin/python3
 # models/user.py
 
+"""
+user.py
+
+This module defines the User class, a subclass of
+BaseModel, which represents users within the application.
+
+Classes:
+    User: A class that inherits from BaseModel and
+    represents a user with attributes like email, password,
+    first_name, and last_name.
+
+Usage:
+    This module is typically used as part of a larger
+    application that manages different models like users,
+    places, states, cities, amenities, and reviews.
+
+Example:
+    from models.user import User
+    new_user = User(email="john.doe@example.com",
+    password="s3cr3t", first_name="John", last_name="Doe")
+    new_user.save()
+
+Attributes:
+    (No module-level attributes)
+"""
+
 from models.base_model import BaseModel
 
 
