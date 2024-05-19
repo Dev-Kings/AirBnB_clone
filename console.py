@@ -250,14 +250,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
 
     def default(self, line):
-        """
-        Called on input line when the command is not recognized
-        Args:
-            line (str): The command line input.
-
-        Returns:
-            None
-        """
+        """ Called on input line when the command is not recognized """
         args = line.split('.')
         if len(args) == 2:
             class_name, command = args
@@ -265,12 +258,9 @@ class HBNBCommand(cmd.Cmd):
             command_name = command_args[0]
             if len(command_args) > 1:
                 command_params = command_args[1].replace(')', '').split(',')
-                command_params = []
-                for param in command_params_str.split(','):
-                    stripped_param = param.strip()
-                    stripped_param = stripped_param.replace('"', '')
-                    stripped_param = stripped_param.replace("'", "")
-                    command_params.append(stripped_param)
+                command_params = [param.strip().replace(
+                    '"', '').replace("'", "")
+                    for param in command_params]
             else:
                 command_params = []
 
@@ -283,11 +273,9 @@ class HBNBCommand(cmd.Cmd):
             elif command_name == 'destroy':
                 self.handle_destroy(class_name, command_params)
             elif command_name == 'update':
-                if (
-                        len(command_params) == 2 and
-                        command_params[1].startswith('{') and
-                        command_params[1].endswith('}')
-                ):
+                if len(command_params) == 2 \
+                    and command_params[1].startswith('{') \
+                        and command_params[1].endswith('}'):
                     self.handle_update_dict(class_name, command_params)
                 else:
                     self.handle_update(class_name, command_params)
