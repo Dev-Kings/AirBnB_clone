@@ -303,7 +303,10 @@ class HBNBCommand(cmd.Cmd):
         for key, obj in all_instances.items():
             if key.split('.')[0] == class_name:
                 result.append(str(obj))
-        print(result)
+        if len(result) > 0:
+            print(result)
+        else:
+            print("** class doesn't exist **")
 
     def handle_count(self, class_name):
         """
