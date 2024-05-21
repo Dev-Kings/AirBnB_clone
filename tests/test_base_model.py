@@ -75,7 +75,7 @@ class TestBaseModel(unittest.TestCase):
             "2024-05-15T14:48:39.231418"))
         self.assertEqual(self.instance.name, "Example")
 
-    def test_save_method(self):
+    def test_save(self):
         """ 
         Test the save method to ensure it updates the updated_at
         attribute with the current datetime.
