@@ -1,0 +1,46 @@
+header {
+	background-color: white;
+	height: 70px;
+	width: 100%;
+	display: flex;
+	border-bottom: 1px solid #CCCCCC;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 20px; /* For better spacing on smaller screens */
+	box-sizing: border-box;
+}
+
+header .logo {
+	width: 200px; /*For better scaling */
+	height: 60px;
+	padding-left: 20px;
+	background-image: url("../images/logo.png");
+	background-repeat: no-repeat;
+	background-position: 20px center;
+	background-size: contain;
+}
+
+/* Media query for tablets */
+@media (max-width: 768px) {
+	header {
+		height: 60px;
+	}
+
+	header .logo {
+		width: 150px; /* Adjust logo width for tablets */
+		height: 50px;
+	}
+}
+
+/* Media query for mobile phones */
+@media (max-width: 480px) {
+	header {
+		height: 50px;
+		padding: 0 10px; /* Adjust padding for smaller screens */
+	}
+
+	header .logo {
+		width: 120px; /* Adjust logo width for mobile phones */
+		height: 40px;
+	}
+}

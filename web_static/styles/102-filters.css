@@ -1,0 +1,108 @@
+.filters {
+	background-color: white;
+	height: auto; /* Allow height adjust based on content */
+	width: 100%;
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+	display: flex;
+	flex-wrap: wrap; /* Allow wrapping of items */
+	align-items: center;
+	justify-content: space-between;
+	position: relative;
+	padding-right: 10px 20px; /* Add padding for better spacing */
+	box-sizing: border-box;
+	z-index: 10;
+}
+
+.filters .locations, .filters .amenities {
+	height: auto;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 10px 0; /* Adjust padding */
+	position: relative;
+}
+
+.filters .locations {
+	border-right: none; /* Remove right border */
+	margin: 0; /* Remove margin */
+}
+
+.filters .locations h3, .filters .amenities h3 {
+	font-weight: 600;
+	margin: 0;
+}
+
+.filters .locations h4, .filters .amenities h4 {
+	font-weight: 400;
+	font-size: 14px;
+	margin: 5px 0 0 0;
+}
+
+.filters .popover {
+	display: none;
+	background-color: #FAFAFA;
+	width: calc(100% - 30px);
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+	position: absolute;
+	top: 56px;
+	left: -15px;
+	padding: 22px;
+	z-index: 10; /* Ensure popover appears above other elements */
+}
+
+.filters .popover li {
+	list-style: none;
+}
+
+.filters .popover h2 {
+	font-size: 16px;
+	margin: 10px 0 5px 0;
+}
+
+.filters .locations:hover .popover, .filters .amenities:hover .popover {
+	display: block;
+}
+
+.filters button {
+	background-color: #FF5A5F;
+	color: #FFFFFF;
+	font-size: 18px;
+	height: 48px;
+	width: 100%;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: opacity 0.3s;
+	margin: 10px 0; /*Adjust margin */
+}
+
+.filters button:hover {
+	opacity: 0.9;
+}
+
+/* Media query for tablets */
+@media (min-width: 768px) {
+	.filters {
+		flex-wrap: nowrap; /* Prevent wrapping on larger screens */
+		padding-right: 30px;
+	}
+
+	.filters .locations, .filters .amenities {
+		height: 70px; /* Fixed height for consistency */
+		width: 25%; /* Restore original width */
+		padding-left: 15px;
+	}
+
+	.filters .locations {
+		border-right: 1px solid #DDDDDD; /* Restore right border */
+		margin-left: 15px; /* Restore original margin */
+	}
+
+	.filters button {
+		width: 20%; /* Restore original width */
+		margin-right: 30px; /* Restore original margin */
+	}
+}
